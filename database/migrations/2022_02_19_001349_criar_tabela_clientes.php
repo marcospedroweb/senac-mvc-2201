@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamps();
             //[executa as migrações] php artisan migrate
             //[Carrega todo o laravel na memoria] php artisan tinker
-            //[Adiciona uma nova linha na tabela] App/Models/[nomeTabela]::create('coluna1' => 'valor1', 'colunaX' => 'valorX')
+            //[(tinker) Adiciona uma nova linha na tabela] App\Models\[nomeTabela]::create(['coluna1' => 'valor1', 'colunaX' => 'valorX']);
         });
     }
 
