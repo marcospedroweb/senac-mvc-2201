@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class clientes extends Model
+class Clientes extends Model
 {
     use HasFactory;
 
-    //[Criando uma model] php artisan make:model [nome]
-    //define colunas
-    protected $fillable = ['id',
-                            'nome',
-                            'endereco',
-                            'telefone',
-                            'email'];
-    //Protected permite que a classe quando "extendida", o proximo pode alterar
+    protected $fillable = [ 'id', 
+    'nome',
+    'endereco',
+    'telefone',
+    'email'];
 
-    //Define a tabela
-    protected $table = 'Clientes';
-    //[Criando uma nova migration] php artisan make:migration [nome do arquivo] --create-[nome]
+    protected $table = 'Clientes';   
+
+    public function compras()
+    {
+        return $this->hasMany(Vendas::class, 'cliente_id');
+    }
 }
