@@ -19,6 +19,11 @@ class Clientes extends Model
 
     public function compras()
     {
-        return $this->hasMany(Vendas::class, 'cliente_id');
+        return $this->hasMany(Vendas::class, 
+                                'cliente_id',
+                                'id');// 1 para muitos
+        // 1 cliente pode ter varias vendas (compras), mostra quais clientes realizaram uma venda(compra)
+        // [return $this->belongsTo(tabelaQueIraRetornarAlgo::class, 'propriedadeDaquelaTabela')]
+        // Ira mostrar todas as compras dos clientes armazenados no [ProdutosVenda]
     }
 }

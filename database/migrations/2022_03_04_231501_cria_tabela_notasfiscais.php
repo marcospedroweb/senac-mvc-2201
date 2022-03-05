@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Produtos', function (Blueprint $table) {
+        Schema::create('NotasFiscais', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
-            $table->text('descricao');
-            $table->double('preco', 10, 2);
+            $table->bigInteger('venda_id')->unsigned();
+            $table->double('valor', 12, 2);
+            $table->double('imposto', 12, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Produtos');
+        Schema::dropIfExists('NotasFiscais');
     }
 };
