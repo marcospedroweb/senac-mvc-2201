@@ -14,4 +14,9 @@ class NotasFiscais extends Model
                             'valor',
                             'imposto'];
     protected $table = 'NotasFiscais';
+
+    public function venda()
+    {
+        return $this->hasOne(Vendas::class, 'id', 'venda_id');
+    }
 }
