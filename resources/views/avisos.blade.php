@@ -1,24 +1,32 @@
 <!-- Semelhante ao include do php -->
-@extends('layouts.externo');
-@section('title', 'Minha primera view');
+@extends('layouts.externoClientes')
+@section('title', 'Minha primera view')
 @section('sidebar')
     @parent
     <hr>
 @endsection
 @section('content')
-    <table class="table">
+    @if ($mostrar)
+        <div class="alert alert-danger" role="alert">
+            <span>ATENÇÃO: lembre dos avisos</span>
+        </div>
+    @else
+        <div></div>
+    @endif
+    <table class="table" border=1>
         <tr>
-            <td>Quadro de Avisos</td>
+            <td>Quadro de Avisos de {{ $nome }}</td>
         </tr>
-        @if ($mostrar)
+        @foreach ($avisos as $aviso)
             <tr>
-                <td>Aviso #1</td><br>
-                <td>bla bla bla</td>
+                <td>Aviso #{{ $aviso['id'] }}
+                    <br>{{ $aviso['aviso'] }}
+                </td>
             </tr>
-        @endif
-        <tr>
-            <td>Aviso #2</td><br>
-            <td>bla bla bla</td>
-        </tr>
+        @endforeach
+        <!-- O blade permite a utilização de php -->
+        <?php
+
+        ?>
     </table>
 @endsection
