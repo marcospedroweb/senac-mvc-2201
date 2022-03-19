@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ClientesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,13 +27,19 @@ Route::get('/avisos', function (){
                                                             ]]); //Passando variaveis get para a pagina
 });
 
-Route::get('/clientes', function (){
-    return view('clientes', ['erro' => true, 'clientes' => [
-                                                                ['id' => 1, 'nome' => "Nome aleatorio1"],
-                                                                ['id' => 2, 'nome' => "Nome aleatorio2"],
-                                                                ['id' => 3, 'nome' => "Nome aleatorio3"],
-                                                                ['id' => 4, 'nome' => ""],
-                                                                ['id' => 5, 'nome' => ""],
-                                                                ['id' => 6, 'nome' => ""],
-                                                            ]]);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+Route::prefix('clientes')->group( function(){
+
+    Route::get('/teste', function (){
+        return view('clientes', ['erro' => true]);
+    });
+
+    Route::get('/listar', [ClientesController::class, 'listar'])->middleware('auth')->name('clientes.listar');
+    // [middleware('auth')] Vai verificar se o usuario esta logado, se não tive logado ele não tem acesso a pagina e retorna para a pagina de login
 });

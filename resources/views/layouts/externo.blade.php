@@ -16,6 +16,7 @@
     @show
     <div class="container">
         @yield('content')
+        @yield('listar')
     </div>
 </body>
 

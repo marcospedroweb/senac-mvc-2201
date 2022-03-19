@@ -2,6 +2,7 @@
 @extends('layouts.externoClientes')
 <!-- Preenchendo a sessão com atributo [title] com o conteudo que quero -->
 @section('title', 'Pagina de clientes')
+@section('teste.active', 'active')
 <!-- Trazendo o bloco com atributo [sidebar] -->
 @section('sidebar')
     <!-- [parent] traz o conteudo dentro desse bloco -->
@@ -18,9 +19,4 @@
     @else
         <div></div>
     @endif
-    <ul>
-        @foreach ($clientes as $cliente)
-            <li>Cliente #{{ $cliente['id'] }}, nome: {{ $cliente['nome'] }}</li>
-        @endforeach
-    </ul>
 @endsection
