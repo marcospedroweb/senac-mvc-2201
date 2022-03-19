@@ -24,3 +24,11 @@ Route::get('/avisos', function (){
                                             ['id' => 2, 'aviso' => 'Em pé sem cair, deitado sem dormir'],
                                             ['id' => 3, 'aviso' => 'A ordem dos tratores não altera o pão duris']]]);
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::prefix('clientes')->group(function (){
+
+    Route::get('listar', [App\Http\Controllers\ClientesController::class,'listar'])->middleware('auth');
+});
