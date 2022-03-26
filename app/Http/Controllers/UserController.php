@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use DB;
 use Hash;
 
@@ -62,7 +63,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        //quando se clica em determinado usuario, o [show()] é responsavel por mostrar esse usuario
+        $user = User::find($id); //[Model::find($ValorQueBusca)] Usado para retornar algum dado de acordo com o valor da coluna
+        return view('users.show', compact('user')); // [compact()] cria um array contendo os valores
     }
 
     /**
@@ -73,7 +76,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        //Usado para retorna o dado que quer editar
+        $user = find::all($id);
+        $roles = Role::pluck('name', 'name')->all();
+        $userRole = $user->roles->pluck('name', 'name')->all(); //Retorna as roles do usuario, The pluck method retrieves all of the values for a given key:
+        //You may also specify how you wish the resulting collection to be keyed:
+        //pluck('name', 'name')
+        return view('users.edit', compact('user', 'roles', 'userRole'));
     }
 
     /**
@@ -85,7 +94,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, ['name' => 'required',
+                                   'email' => 'required|email|unique:users,email',
+                                   'password' => 'required|same:confirm-password',
+                                   'roles' => 'required']);// Valida todos os dados que o usuario está enviando
+        $input = $request->all();
+        if(!empty($input['password']))//Verifica se a senha está vazia
+            $input['password'] = Hash::make($input['password']);
+        else
+            $input = Arr::except($input, array('password'));
+        $user = User::find($id); //Busca usuario pelo id
+        $user->update($input); // Atualiza o usuario no banco
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+        $user->assignRole($request->input('roles'));
+        return redirect()->route('users.index')->with('success', 'Usuario atualizado com sucesso');
     }
 
     /**
@@ -96,6 +118,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('user.index')->with('success', 'Usuario removido com sucesso');
     }
 }
