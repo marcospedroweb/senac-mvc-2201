@@ -10,16 +10,25 @@ use DB;
 
 class RoleController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         //Determinados as roles possiveis
-        $this->middleware('permission:role-list|role-create|role-edit|role-delete',
-                          ['only' => ['index', 'store']]);
-        $this->middleware('permission:role-create',
-                          ['only' => ['create', 'store']]);
-        $this->middleware('permission:role-edit',
-                          ['only' => ['edit', 'update']]);
-        $this->middleware('permission:role-delete',
-                          ['only' => ['destroy']]);
+        $this->middleware(
+            'permission:role-list|role-create|role-edit|role-delete',
+            ['only' => ['index', 'store']]
+        );
+        $this->middleware(
+            'permission:role-create',
+            ['only' => ['create', 'store']]
+        );
+        $this->middleware(
+            'permission:role-edit',
+            ['only' => ['edit', 'update']]
+        );
+        $this->middleware(
+            'permission:role-delete',
+            ['only' => ['destroy']]
+        );
     }
     /**
      * Display a listing of the resource.
@@ -51,8 +60,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required|unique:roles,name',
-                                   'permission' => 'required']);
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required'
+        ]);
         $role = Role::create(['name' => $request->input('name')]);
         $role->syncPermissions($request->input('permission'));
         return redirect()->route('roles.index')->with('success', 'Perfil criado com sucesso');
@@ -67,10 +78,12 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        $rolePermissions = Permission::join('role_has_permissions',
-                                            'role_has_permissions.permission_id',
-                                            '=',
-                                            'permission_id')->where('role_has_permission.role_id', $id)->get();
+        $rolePermissions = Permission::join(
+            'role_has_permissions',
+            'role_has_permissions.permission_id',
+            '=',
+            'permission_id'
+        )->where('role_has_permission.role_id', $id)->get();
         return view('roles.show', compact('role', 'rolePermissions'));
     }
 
@@ -82,7 +95,8 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role = Role::find($id);
+        $permission = Permission::get();
     }
 
     /**

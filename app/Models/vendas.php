@@ -21,4 +21,22 @@ class vendas extends Model
 
     //Criando a tabela com migration
     //php artisan make:migration [nome da migration] --create [nome tabela]
+
+    public function cliente()
+    {
+        return $this->belongsTo(Clientes::class,
+                                'cliente_id', //coluna nesta model
+                                'id' //coluna na outra model
+                                );
+    }
+
+    public function produtos()
+    {
+        return $this->hasMany(ProdutosVenda::class, 'venda_id', 'id');
+    }
+
+    public function notaFiscal()
+    {
+        return $this->hasOne(NotasFiscais::class, 'venda_id', 'id');
+    }
 }
