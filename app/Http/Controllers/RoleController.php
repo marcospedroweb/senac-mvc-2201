@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use DB;
+// use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -95,8 +96,13 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::find($id);
-        $permission = Permission::get();
+        $role = Role::find($id); // Encontrado aquela role com o id que veio da interface
+        $permission = Permission::get(); // Pegandos as permissoes
+        $rolePermissions = DB::table('role_has_permissions')
+            ->where('role_has_permissions.role.id', $id)
+            ->pluck('role_has_permissions.permission_id')->all(); // Retornando todas a permissoes de um determinado perfil
+
+        return view('roles.edit', compact('role', 'permission', 'rolePermissions')); //Retornando para a view, o perfil, as permissoes e permissoes daquele cargo
     }
 
     /**
@@ -108,7 +114,16 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'permission' => 'required'
+        ]);
+        $role = Role::find($id); // Encontra aquele perfil com aquele id
+        $role->name = $request->input('name'); // Altera no nome do perfil
+        $role->save(); // Salva
+        $role->syncPermissions($request->input('permission')); // E sincroniza
+
+        return redirect()->route('roles.index')->with('success', 'Perfil atualizado com sucesso');
     }
 
     /**
@@ -119,6 +134,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('roles')->where('id', $id)->delete(); //Procura no database aquele perfil com aquele id e deleta ele
+        return redirect()->route('roles.index')->with('success', 'Perfil apagado com sucesso');
     }
 }
