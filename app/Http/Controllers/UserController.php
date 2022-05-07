@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
+
+use Spatie\Permission\Models\Permission;
 use DB;
 use Hash;
 use App\Models\User;
@@ -18,11 +20,22 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
+        $data = User::orderBy('id', 'DESC')->paginate(5);
 
-        return view('users.index', 
-                    compact('data'))->with('i',
-                                        ($request->input('page', 1) - 1) * 5);
+        // $rolePermissions = Permission::join(
+        //     'role_has_permissions',
+        //     'permissions.id',
+        //     '=',
+        //     'role_has_permissions.permission_id'
+        // )->where()->get();
+
+        return view(
+            'users.index',
+            compact('data')
+        )->with(
+            'i',
+            ($request->input('page', 1) - 1) * 5
+        );
     }
 
     /**
@@ -45,10 +58,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [ 'name' => 'required',
-                                    'email' => 'required|email|unique:users,email',
-                                    'password' => 'required|same:confirm-password',
-                                    'roles' => 'required']);
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            'roles' => 'required'
+        ]);
         $input = $request->all();
 
         $input['password'] = Hash::make($input['password']);
@@ -99,16 +114,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [ 'name' => 'required',
-                                    'email' => 'required|email|unique:users,email',
-                                    'password' => 'required|same:confirm-password',
-                                    'roles' => 'required']);
-        
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            'roles' => 'required'
+        ]);
+
         $input = $request->all();
 
-        if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);            
-        }else{
+        if (!empty($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        } else {
             $input = Arr::except($input, array('password'));
         }
 
