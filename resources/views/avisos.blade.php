@@ -1,11 +1,12 @@
 @extends('layouts.externo')
 @section('title', 'Minha primeira view')
 @section('sidebar')
-    @parent
-    <hr>
-@endsection 
+    <div>
+        @parent
+    </div>
+@endsection
 @section('content')
-    @if($mostrar)
+    @if ($mostrar)
         <div class="alert alert-danger" role="alert">
             ATENÇÃO: lembre dos avisos
         </div>
@@ -13,14 +14,17 @@
         <div></div>
     @endif
     <table class="table">
-        <tr><td>Quadro de Avisos de {{$nome}}</td></tr>
-        @foreach($avisos as $aviso)
-            <tr><td>Aviso #{{$aviso['id']}} <br>{{$aviso['aviso']}} </td></tr>    
-        @endforeach
-        <?php
-        foreach($avisos as $aviso){
-            echo "<tr><td>Aviso #{$aviso['id']} <br>{$aviso['aviso']} </td></tr>\n";
-        }
-        ?>
+        <thead>
+            <tr>
+                <td>Quadro de Avisos de {{ $nome }}</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($avisos as $aviso)
+                <tr>
+                    <td>Aviso #{{ $aviso['id'] }} {{ $aviso['aviso'] }} </td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 @endsection

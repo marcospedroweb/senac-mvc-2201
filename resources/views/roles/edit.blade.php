@@ -2,67 +2,58 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col-lg-12 margin-tb">
+    <div class="pull-right mb-5">
+        <a class="btn btn-primary" href="{{ route('roles.index') }}">Voltar</a>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-5">
         <div class="pull-left">
-            <h2>Editar Perfil</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Voltar</a>
+            <h2>Editando perfil</h2>
         </div>
     </div>
-</div>
-<br>
 
-@if (count($errors) > 0)
+    @if (count($errors) > 0)
+        <div class="alert alert-danger mt-4">
+            <span><span class="fw-bold">Ops!</span> Há algo errado com os dados.</span>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <div class="alert alert-danger">
-        <strong>Ops!</strong> Há algo errado com os dados passados.<br><br>
-        <ul>
-        @foreach ($errors->all() as $error)
+    {!! Form::model($role, ['method' => 'PATCH', 'route' => ['roles.update', $role->id]]) !!}
 
-            <li>{{ $error }}</li>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <span class="fw-bold">Nome:</span>
 
-        @endforeach
-        </ul>
-    </div>
+                {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
 
-@endif
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <span class="fw-bold">Permissão:</span>
+                <br />
 
-{!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id]]) !!}
+                @foreach ($permission as $value)
+                    <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, ['class' => 'name']) }}
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Nome:</strong>
+                        {{ $value->name }}</label>
 
-            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                    <br />
+                @endforeach
 
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Gravar</button>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Permissão:</strong>
-            <br/>
 
-            @foreach($permission as $value)
-
-                <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
-
-                {{ $value->name }}</label>
-
-            <br/>
-
-            @endforeach
-
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Gravar</button>
-    </div>
-</div>
-
-{!! Form::close() !!}
+    {!! Form::close() !!}
 
 
 @endsection
