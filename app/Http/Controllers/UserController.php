@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
-
-use Spatie\Permission\Models\Permission;
 use DB;
 use Hash;
 use App\Models\User;
+
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -21,13 +21,6 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $data = User::orderBy('id', 'DESC')->paginate(5);
-
-        // $rolePermissions = Permission::join(
-        //     'role_has_permissions',
-        //     'permissions.id',
-        //     '=',
-        //     'role_has_permissions.permission_id'
-        // )->where()->get();
 
         return view(
             'users.index',
@@ -116,7 +109,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required|same:confirm-password',
             'roles' => 'required'
         ]);

@@ -5,13 +5,15 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Editar perfil</h2>
+                <h2>Cadastrar cliente</h2>
             </div>
+
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('roles.index') }}"> Voltar</a>
+                <a class="btn btn-primary" href="{{ route('clients.index') }}"> Voltar</a>
             </div>
         </div>
     </div>
+
 
 
     @if (count($errors) > 0)
@@ -25,34 +27,35 @@
         </div>
     @endif
 
-
-    {!! Form::model($cliente, ['method' => 'PATCH', 'route' => ['clients.update', $cliente->id]]) !!}
+    {!! Form::open(['route' => 'clients.store', 'method' => 'POST']) !!}
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Nome:</strong>
+                <span class="fw-bold">Nome:</span>
+
                 {!! Form::text('nome', null, ['placeholder' => 'Nome', 'class' => 'form-control']) !!}
+
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Email:</strong>
+                <span class="fw-bold">Email:</span>
                 {!! Form::text('email', null, ['placeholder' => 'Email', 'class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Endereço:</strong>
+                <span class="fw-bold">Endereço:</span>
                 {!! Form::text('endereco', null, ['placeholder' => 'Endereço', 'class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Telefone:</strong>
+                <span class="fw-bold">Telefone:</span>
                 {!! Form::text('telefone', null, ['placeholder' => 'Telefone', 'class' => 'form-control']) !!}
             </div>
         </div>

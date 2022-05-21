@@ -11,6 +11,7 @@ class RoleController extends Controller
 {
     public function __construct()
     {
+        /**/
         $this->middleware(
             'permission:role-list|role-create|role-edit|role-delete',
             ['only' => ['index', 'store']]
@@ -27,6 +28,7 @@ class RoleController extends Controller
             'permission:role-delete',
             ['only' => ['destroy']]
         );
+        /**/
     }
 
     /**
@@ -83,19 +85,11 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
 
-        // ->join('categories', 'articles.id', '=', 'categories.id')
-        /*
-            [Semelhante]
-            select * from permissions
-            inner join role_has_permissions
-            on permissions.id = role_has_permissions.permission_id
-            where role_has_permissions.role_id = $id
-        */
         $rolePermissions = Permission::join(
             'role_has_permissions',
-            'permissions.id',
+            'role_has_permissions.permission_id',
             '=',
-            'role_has_permissions.permission_id'
+            'permission_id'
         )->where('role_has_permissions.role_id', $id)->get();
 
         return view('roles.show', compact('role', 'rolePermissions'));
